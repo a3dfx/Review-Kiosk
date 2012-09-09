@@ -1,0 +1,19 @@
+body
+{
+	background-color: #F6F6F6;
+	margin:0;	
+}
+
+@font-face
+{
+font-family: museo-sans-300;
+src: url('/static/museo/museo-sans-300.ttf'),
+     url('/static/museo/museo-sans-300.eot'),
+     url('/static/museo/museo-sans-300.svg'),
+     url('/static/museo/museo-sans-300.woff');
+}
+
+div
+{
+	font-family: museo-sans-300;
+}
