@@ -35,16 +35,6 @@ class Review(db.Model):
     business = db.ReferenceProperty(Business)
     add_dt = db.DateTimeProperty(auto_now=True)
 
-def getUrlParams(obj):
-    params = {}
-    for arg in obj.request.arguments():
-        params[arg] = obj.request.get(arg)
-    return params
-
-class BaseRequestHandler(webapp.RequestHandler):
-    def browser(self):
-        return str(self.request.headers['User-Agent'])
-
 class MainPage(webapp.RequestHandler):
     def get(self, resource):
 
@@ -115,7 +105,6 @@ class MainPage(webapp.RequestHandler):
 
                 response = simplejson.dumps({"message":message}, sort_keys=True)
                 self.response.out.write(response)
-
             else:
                 uastring = self.request.headers.get('user_agent')
                 user_on_iphone = "Mobile" in uastring and "Safari" in uastring
@@ -355,7 +344,15 @@ class ValidateCode (webapp.RequestHandler):
 
         code = self.request.get('code')
         biz = Business.all().filter('url = ', code).get()
-        self.response.out.write(simplejson.dumps({"valid": biz != None}))
+        if biz == None:
+            self.response.out.write(simplejson.dumps({"valid": False}))
+        else:
+            self.response.out.write(simplejson.dumps(
+                {
+                    "valid": True,
+                    "business_name": biz.name,
+                    "involvement": [op for op in biz.involvement_options.split('|')]
+                }))
 
 application = webapp.WSGIApplication(
                                      [
