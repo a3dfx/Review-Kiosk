@@ -54,7 +54,7 @@ $(document).ready(function() {
 	    		return this
 	    	}
 	    },
-	    getValidInput: function() {
+	    validateRequiredField: function() {
 	    	var inputValid = false;
 	    	this.errorMessage('Invalid input');
 	        if (this.validateEmail()) {
@@ -65,11 +65,8 @@ $(document).ready(function() {
 	        	var pattern = new RegExp(/<(.|\n)*?>/g);
 	        	if (!pattern.test(this.$textField().content()) &&
 	        		this.$textField().content() != this.placeHolderText()) {
-	        		inputValid = true;
-	        		if (this.required()) {
-	        			inputValid = this.$textField().content().length > 0
-	        		}
-	        	}        	
+	        		inputValid = this.$textField().content().length > 0
+	        	}       	
 	        }
     		if (this.charLimit()) {
     			if (this.$textField().content().length <= this.charLimit()) {
@@ -99,7 +96,26 @@ $(document).ready(function() {
 	        		this.$errorContainer().show().content(this.errorMessage());        		        		
 	        	}	        	
 	        	null
-	        }
+	        }	    	
+	    },
+	    validateNotRequiredField: function() {
+	    	if (this.$textField().content() == this.placeHolderText()) {
+	    		return null;
+	    	} else {
+	        	var pattern = new RegExp(/<(.|\n)*?>/g);
+	        	if (!pattern.test(this.$textField().content())) {
+	        		return this.$textField().content();
+	        	} else {
+	        		return null;
+	        	}	    		
+	    	}
+	    },
+	    getValidInput: function() {
+	    	if (this.required()) {
+	    		return this.validateRequiredField();
+	    	} else {
+	    		return this.validateNotRequiredField();
+	    	}
 	    },
 	    initialize: function() {
 	    	var self = this;

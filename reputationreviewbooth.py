@@ -2,6 +2,7 @@ import logging
 from google.appengine.ext import db
 from google.appengine.ext import webapp
 from google.appengine.api import mail
+from google.appengine.api import datastore_errors
 from google.appengine.api.datastore import Key
 from google.appengine.ext.webapp.util import run_wsgi_app
 import random
@@ -15,6 +16,7 @@ class Reviewer(db.Model):
     email = db.StringProperty()
     business_involvement = db.StringProperty()
     agree_public_share = db.BooleanProperty(True)
+    name = db.StringProperty()
     add_dt = db.DateTimeProperty(auto_now=True)
 
 class Business(db.Model):
@@ -34,6 +36,46 @@ class Review(db.Model):
     star_rating = db.FloatProperty()
     business = db.ReferenceProperty(Business)
     add_dt = db.DateTimeProperty(auto_now=True)
+
+class Ajax(webapp.RequestHandler):
+    def get(self):
+
+        business_code = self.request.get('business_code')
+        user_email = self.request.get('email')
+        star_rating = self.request.get('starRating')
+        feedback = self.request.get('feedback')
+        firstname = self.request.get('firstname')
+        business_involvement = self.request.get('business_involvement')
+        with_public_sharing_checkbox = self.request.get('agree_public_share')
+        message = "successful"
+        biz = Business.all().filter("url = ", business_code).get()
+        if biz:
+            if user_email:
+                rvr = Reviewer.all().filter("email = ", user_email).get()
+
+                if not rvr:
+                    rvr = Reviewer(
+                        email=user_email,
+                        business_involvement=business_involvement,
+                        agree_public_share= with_public_sharing_checkbox == 'true',
+                        name=firstname
+                    )
+                    rvr.save()
+                if star_rating and feedback:
+                    r = Review(
+                        reviewer=rvr,
+                        star_rating=float(star_rating),
+                        feedback=feedback,
+                        business=biz
+                    )
+                    r.save()
+                else:
+                    message = "Error: Missing or rating and feedback"
+        else:
+            message = "Error: Business code invalid"
+        response = simplejson.dumps({"message":message}, sort_keys=True)
+        self.response.out.write(response)
+
 
 class MainPage(webapp.RequestHandler):
     def get(self, resource):
@@ -71,58 +113,26 @@ class MainPage(webapp.RequestHandler):
 
         path = self.request.url.split('/')[3]
         displayDevice = 'tablet' if path == 't' else 'monitor'
-
-        user_email = self.request.get('email')
-        star_rating = self.request.get('starRating')
-        feedback = self.request.get('feedback')
-        business_involvement = self.request.get('business_involvement')
-        with_public_sharing_checkbox = self.request.get('agree_public_share')
-
-        message = "successful"
         biz = Business.all().filter("url = ", resource).get()
         if biz:
-            if user_email:
-                rvr = Reviewer.all().filter("email = ", user_email).get()
+            uastring = self.request.headers.get('user_agent')
+            user_on_iphone = "Mobile" in uastring or "Galaxy Nexus" in uastring
 
-                if not rvr:
-                    rvr = Reviewer(
-                        email=user_email,
-                        business_involvement=business_involvement,
-                        agree_public_share= with_public_sharing_checkbox == 'true'
+            pageData = simplejson.dumps({'involvementOptions': biz.involvement_options.split('|') if biz.involvement_options else False,
+                                         'businessName': biz.name,
+                                         'withPublicSharingCheckbox': biz.with_public_sharing_checkbox,
+                                         'user_on_iphone': user_on_iphone,
+                                         'business_code': resource,
+                                         'displayDevice':  displayDevice}, sort_keys=True)
+            script = """
+                $(document).ready(function() {
+                    $("#root").append(
+                        G.controls.Home.create()
+                            .pageData(%s)
                     )
-                    rvr.save()
-
-                if star_rating and feedback:
-                    r = Review(
-                        reviewer=rvr,
-                        star_rating=float(star_rating),
-                        feedback=feedback,
-                        business=biz
-                    )
-                    r.save()
-                else:
-                    message = "Error"
-
-                response = simplejson.dumps({"message":message}, sort_keys=True)
-                self.response.out.write(response)
-            else:
-                uastring = self.request.headers.get('user_agent')
-                user_on_iphone = "Mobile" in uastring and "Safari" in uastring
-
-                pageData = simplejson.dumps({'involvementOptions': biz.involvement_options.split('|'),
-                                             'businessName': biz.name,
-                                             'withPublicSharingCheckbox': biz.with_public_sharing_checkbox,
-                                             'user_on_iphone': user_on_iphone,
-                                             'displayDevice':  displayDevice}, sort_keys=True) if biz.involvement_options else simplejson.dumps({'involvementOptions': ['None', 'None', 'None', 'None'], 'displayDevice':  displayDevice}, sort_keys=True)
-                script = """
-                    $(document).ready(function() {
-                        $("#root").append(
-                            G.controls.Home.create()
-                                .pageData(%s)
-                        )
-                    });
-                """ % pageData
-                self.response.out.write(myTemplate.addScript(script).buildPage())
+                });
+            """ % pageData
+            self.response.out.write(myTemplate.addScript(script).buildPage())
         else:
             self.redirect('/notfound')
 
@@ -227,7 +237,8 @@ class Dashboard(webapp.RequestHandler):
                     'url': biz.url,
                     'starSum': 0,
                     'rvrCount': 0,
-                    'starAvg': 0
+                    'starAvg': 0,
+                    'kioPass': biz.kioware_passcode
                 }
             if days_back:
                 n_days_ago = datetime.datetime.now() - datetime.timedelta(days = days_back)
@@ -308,17 +319,23 @@ class Reviews(webapp.RequestHandler):
             }
 
         for rvr in rvr_query:
-            rows_by_review.append(
-                {
-                    'business_name': biz_map[str(rvr.business.key())]['name'],
-                    'date': str(rvr.add_dt),
-                    'star_rating': rvr.star_rating,
-                    'reviewer_email': rvrer_map[str(rvr.reviewer.key())]['email'],
-                    'agree_public_share': rvrer_map[str(rvr.reviewer.key())]['agree_public_share'],
-                    'business_involvement': rvrer_map[str(rvr.reviewer.key())]['business_involvement'],
-                    'feedback': rvr.feedback
-                }
-            )
+            try: 
+                rvr.reviewer
+                if biz_map[str(rvr.business.key())]['name'] != 'test':
+                    rows_by_review.append(
+                        {
+                            'business_name': biz_map[str(rvr.business.key())]['name'],
+                            'date': str(rvr.add_dt),
+                            'star_rating': rvr.star_rating,
+                            'reviewer_email': rvrer_map[str(rvr.reviewer.key())]['email'],
+                            'agree_public_share': rvrer_map[str(rvr.reviewer.key())]['agree_public_share'],
+                            'business_involvement': rvrer_map[str(rvr.reviewer.key())]['business_involvement'],
+                            'feedback': rvr.feedback
+                        }
+                    )
+            except datastore_errors.ReferencePropertyResolveError:
+                logging.error('ReferenceProperty error')
+            
 
         data = simplejson.dumps({"rows": rows_by_review}, sort_keys=True)
 
@@ -356,6 +373,7 @@ class ValidateCode (webapp.RequestHandler):
 
 application = webapp.WSGIApplication(
                                      [
+                                         ('/ajax', Ajax), 
                                          ('/addbiz', AddBusiness),
                                          ('/dashboard', Dashboard),
                                          ('/makechange', Change),

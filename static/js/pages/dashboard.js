@@ -56,7 +56,13 @@ $(document).ready(function() {
 						"padding-left": "20px"
 					}).text(
 						"Url Path"
-					)							
+					),
+					$("<td>").css({
+						"font-weight": "bold",
+						"padding-left": "20px"
+					}).text(
+						"Kioware Password"
+					)					
 				)			
 			);
 			if (stats) {
@@ -81,10 +87,16 @@ $(document).ready(function() {
 									this.starAvg
 								),
 								$("<td>").css({
-									"text-align": "right",
+									"text-align": "left",
 									"padding-left": "20px"
 								}).append(
 									this.url
+								),
+								$("<td>").css({
+									"text-align": "left",
+									"padding-left": "20px"
+								}).append(
+									this.kioPass
 								)							
 							)
 						)

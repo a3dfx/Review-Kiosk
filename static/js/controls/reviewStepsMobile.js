@@ -228,6 +228,7 @@ $(document).ready(function() {
 	    displayDevice: Control.property(),
 	    involvementOptions: Control.property(),
 	    businessName: Control.property(),
+	    business_code: Control.property(),
 	    withPublicSharingCheckbox: Control.property(),
 	    inputsValid: function(inpList) {
 	    	var allInpsValid = true;
@@ -324,7 +325,8 @@ $(document).ready(function() {
 							publicPermission = encodeURIComponent(self.$publicPermission().isChecked());
 						}
 						
-						$.get("?email=" + encodeURIComponent(self.$email().getValidInput()) + 
+                        $.get("/ajax?email=" + encodeURIComponent(self.$email().getValidInput()) +
+                            "&business_code=" + encodeURIComponent(self.business_code()) + 
 							"&business_involvement=" + encodeURIComponent(biz_involvement) +
 							"&starRating=" + encodeURIComponent(self.$starRating().getValidInput()) +
 							"&agree_public_share=" + publicPermission +
@@ -340,7 +342,7 @@ $(document).ready(function() {
 			                    				"font-size": "70px",
 			                    				"color": "white"
 			                    			}).append(
-			                    				'Thank you for visiting <br/>' + bizName + '!'
+			                    				'Thank you for visiting <br/>' + bizName
 			                    			),
 			                    			$("<div>").css({
 			                    				'font-size': '30px',
