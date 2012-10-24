@@ -95,6 +95,7 @@ $(document).ready(function() {
 	    		$('div.rateit').rateit();
 	    	})
 	    },
+	    cssErrorDisplayWidth: Control.chain('$errorBorder', 'css/width'),
 	    getValidInput: function() {
 	    	var starsGiven = Math.round(5 * (parseFloat($('.rateit-selected').css("width").replace("px", ""))/225)*100)/100
 	    	if (starsGiven % 1) {

@@ -106,6 +106,7 @@ class MainPage(webapp.RequestHandler):
             "/static/js/controls/reviewSectionHeader.js",
             "/static/js/controls/reviewStep.js",
             "/static/js/controls/reviewStepsMobile.js",
+            "/static/js/controls/reviewStepsNexus.js",
             "/static/js/controls/sitelink.js",
             "/static/js/controls/reviewtextbox.js",
             "/static/js/pages/homeBtest.js"
@@ -116,12 +117,14 @@ class MainPage(webapp.RequestHandler):
         biz = Business.all().filter("url = ", resource).get()
         if biz:
             uastring = self.request.headers.get('user_agent')
-            user_on_iphone = "Mobile" in uastring or "Galaxy Nexus" in uastring
+            user_on_iphone = "Mobile" in uastring
+            user_on_nexus = "Nexus 7 Build" in uastring
 
             pageData = simplejson.dumps({'involvementOptions': biz.involvement_options.split('|') if biz.involvement_options else False,
                                          'businessName': biz.name,
                                          'withPublicSharingCheckbox': biz.with_public_sharing_checkbox,
                                          'user_on_iphone': user_on_iphone,
+                                         'user_on_nexus': user_on_nexus,
                                          'business_code': resource,
                                          'displayDevice':  displayDevice}, sort_keys=True)
             script = """
@@ -250,10 +253,11 @@ class Dashboard(webapp.RequestHandler):
 
             while rvrsList:
                 rvr = rvrsList.pop()
-                biz = bizs[str(rvr.business.key())]
-                biz['starSum'] += rvr.star_rating
-                biz['rvrCount'] += 1
-                biz['starAvg'] = round(biz['starSum'] / biz['rvrCount'], 2)
+                if rvr.business.active:
+                    biz = bizs[str(rvr.business.key())]
+                    biz['starSum'] += rvr.star_rating
+                    biz['rvrCount'] += 1
+                    biz['starAvg'] = round(biz['starSum'] / biz['rvrCount'], 2)
 
             return bizs
 
@@ -321,18 +325,19 @@ class Reviews(webapp.RequestHandler):
         for rvr in rvr_query:
             try: 
                 rvr.reviewer
-                if biz_map[str(rvr.business.key())]['name'] != 'test':
-                    rows_by_review.append(
-                        {
-                            'business_name': biz_map[str(rvr.business.key())]['name'],
-                            'date': str(rvr.add_dt),
-                            'star_rating': rvr.star_rating,
-                            'reviewer_email': rvrer_map[str(rvr.reviewer.key())]['email'],
-                            'agree_public_share': rvrer_map[str(rvr.reviewer.key())]['agree_public_share'],
-                            'business_involvement': rvrer_map[str(rvr.reviewer.key())]['business_involvement'],
-                            'feedback': rvr.feedback
-                        }
-                    )
+                if rvr.business.active:
+                    if biz_map[str(rvr.business.key())]['name'] != 'test':
+                        rows_by_review.append(
+                            {
+                                'business_name': biz_map[str(rvr.business.key())]['name'],
+                                'date': str(rvr.add_dt),
+                                'star_rating': rvr.star_rating,
+                                'reviewer_email': rvrer_map[str(rvr.reviewer.key())]['email'],
+                                'agree_public_share': rvrer_map[str(rvr.reviewer.key())]['agree_public_share'],
+                                'business_involvement': rvrer_map[str(rvr.reviewer.key())]['business_involvement'],
+                                'feedback': rvr.feedback
+                            }
+                        )
             except datastore_errors.ReferencePropertyResolveError:
                 logging.error('ReferenceProperty error')
             

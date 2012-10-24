@@ -4,6 +4,7 @@ $(document).ready(function() {
 	        content:
 	        	{
 		        	html: "li",
+		        	ref: 'container',
 		        	content:
 			        	[
 							{
@@ -27,6 +28,7 @@ $(document).ready(function() {
 			        	]
 	        	}
 	    },
+	    cssContainer: Control.chain('$container', 'css'),
 	    initialize: function() {
 	    	var self = this;
 	    	this.$label().click(function() {

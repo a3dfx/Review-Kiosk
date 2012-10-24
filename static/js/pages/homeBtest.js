@@ -22,7 +22,14 @@ $(document).ready(function() {
             if (data == undefined) {
                 return data
             } else {
-                $reviewStep = data.user_on_iphone ? G.controls.ReviewStepsMobile : G.controls.ReviewStep;
+            	if (data.user_on_iphone) {
+            		$reviewStep = G.controls.ReviewStepsMobile;
+            	} else if (data.user_on_nexus) {
+            		$reviewStep = G.controls.ReviewStepsNexus;
+            		this.$review_section().css({ 'margin-top': 40});
+            	} else {
+            		$reviewStep = G.controls.ReviewStep
+            	}           	
                 this.$review_section().content(
                         $reviewStep.create()
                             .displayDevice(data.displayDevice)
@@ -35,10 +42,10 @@ $(document).ready(function() {
             }
         },
         initialize: function() {
-            G.doTimer();
-            this.$content().click(function() {
-                G.restartTimeout();
-            });
+//            G.doTimer();
+//            this.$content().click(function() {
+//                G.restartTimeout();
+//            });
         }
     }))
 })

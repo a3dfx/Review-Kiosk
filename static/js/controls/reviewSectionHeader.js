@@ -28,6 +28,9 @@ $(document).ready(function() {
 
 	            }	            
 	    },
+	    cssStep: Control.chain('$stepNum', 'css'),
+	    cssStepLabel: Control.chain('$label_text', 'css'),
+	    cssStepTitle: Control.chain('$stepTitle', 'css'),
 	    label_text: Control.property(function(text) {
 	    	if (text == undefined) {
 	    		return  this.$label_text();

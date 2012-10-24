@@ -31,13 +31,15 @@ $(document).ready(function() {
 	  	            }		        	
 	        	]                  
 	    },
+	    cssTextField: Control.chain('$textField', 'css'),
 	    label: Control.property(),
 	    id: Control.property(),
 	    errorMessage: Control.property(),
 	    validateEmail: Control.property(),
 	    required: Control.property(),
 	    withCustomErrorDisplay: Control.property(),  
-	    charLimit: Control.property(),	    
+	    charLimit: Control.property(),	   
+	    
 	    placeHolderText: Control.property(function(text) {
 	    	if (text == undefined) {
 	    		return text

@@ -34,6 +34,8 @@ $(document).ready(function() {
 	  	            }	        	 
 	        	]	                  
 	    },
+	    cssErrorMarker: Control.chain('$errorMarker', 'css'),
+	    cssTextArea: Control.chain('$textArea', 'css'),
 	    initialize: function() {
 	    	var self = this;
 	    	this.$textArea().focus(function() {
