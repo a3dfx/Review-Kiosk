@@ -25,10 +25,45 @@ div.bigstars div.rateit-reset
     background: url(../images/star-black45.png);
     width: 32px;
     height: 32px;
-display: none;
+	display: none;
 }
 
 div.bigstars div.rateit-reset:hover
+{
+    background: url(../images/star-black45.png);
+}
+
+/*
+SOURCE: http://iconexpo.com/2008/12/free-8color-star-icons/
+
+*/
+
+
+div.bigstars2 div.rateit-range
+{
+    background: url(../images/star_grey.png);
+    height: 75px;
+}
+
+div.bigstars2 div.rateit-hover
+{
+    background: url(../images/star.png);
+}
+
+div.bigstars2 div.rateit-selected
+{
+    background: url(../images/star_orange.png);
+}
+
+div.bigstars2 div.rateit-reset
+{
+    background: url(../images/star-black45.png);
+    width: 32px;
+    height: 32px;
+display: none;
+}
+
+div.bigstars2 div.rateit-reset:hover
 {
     background: url(../images/star-black45.png);
 }

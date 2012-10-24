@@ -34,6 +34,7 @@ $(document).ready(function() {
 	    cssTextField: Control.chain('$textField', 'css'),
 	    label: Control.property(),
 	    id: Control.property(),
+	    cssErrorMarker: Control.chain('$errorMarker', 'css'),
 	    errorMessage: Control.property(),
 	    validateEmail: Control.property(),
 	    required: Control.property(),

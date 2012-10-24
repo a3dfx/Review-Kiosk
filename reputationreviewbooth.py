@@ -99,6 +99,7 @@ class MainPage(webapp.RequestHandler):
             "/static/Archive/rating_screen_v1/css/shCoreDefault.css",
             "/static/js/G.js",
             "/static/js/controls/starrating.js",
+            "/static/js/controls/starRatingLarge.js",
             "/static/js/controls/checkbox.js",
             "/static/js/controls/submitButton.js",
             "/static/js/controls/textField.js",
@@ -109,7 +110,7 @@ class MainPage(webapp.RequestHandler):
             "/static/js/controls/reviewStepsNexus.js",
             "/static/js/controls/sitelink.js",
             "/static/js/controls/reviewtextbox.js",
-            "/static/js/pages/homeBtest.js"
+            "/static/js/pages/home.js"
         ])
 
         path = self.request.url.split('/')[3]
@@ -119,7 +120,6 @@ class MainPage(webapp.RequestHandler):
             uastring = self.request.headers.get('user_agent')
             user_on_iphone = "Mobile" in uastring
             user_on_nexus = "Nexus 7 Build" in uastring
-
             pageData = simplejson.dumps({'involvementOptions': biz.involvement_options.split('|') if biz.involvement_options else False,
                                          'businessName': biz.name,
                                          'withPublicSharingCheckbox': biz.with_public_sharing_checkbox,

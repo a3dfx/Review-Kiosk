@@ -37,7 +37,7 @@ $(document).ready(function() {
 	    		        	 							'class': "rateit bigstars",
 	    		        	 							"data-rateit-starwidth": "45",
 	    		        	 							"data-rateit-starheight": "45",
-	    		        	 							"data-rateit-step": ".25"
+	    		        	 							"data-rateit-step": ".5"
 	    		        	 						},
 	    		        	 						css: {
 	    		        	 							margin: 0

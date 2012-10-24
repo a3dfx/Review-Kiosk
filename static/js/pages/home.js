@@ -1,62 +1,52 @@
 $(document).ready(function() {
-	G.addControl("Home", G.controls.CustomPage.sub({
-		initialize: function() {
-			var pageContent = $("<div>").append(
-				$("<div>").css({
-					"vertical-align": "middle",
-					"padding-top": "50px",
-					"color": "white",
-					"font-size": "50px"
-				}).append(
-					"Tell people what you think"
-				),
-				$("<div>").css({
-					"vertical-align": "middle",
-					"padding": "20px",
-					"padding-bottom": "50px",
-					"color": "lightblue",
-					"font-size": "20px"
-				}).append(
-					"Select a review site to continue"
-				)
-			);
-			this.$Page_content().css({
-			    "border-top": "1px solid #A3A19E",
-			    "box-shadow": "0 1px 1px 0 #FFFFFF",
-			    "width": "100%",
-			    "height": "100%",
-			    "bottom": "0",
-			    "background-image": "url('/static/images/background.jpg')",
-			    "background-repeat": "no",
-			    "background-repeat": "repeat-x"
-			});	
-			this.content(
-				$("<center>").append(
-					$("<div>").css({
-						"margin-top": "-36px"
-					}).append(
-						$("<img>").attr({
-							src: "/static/images/horizontal_divide_flip.png"
-						})
-					),	
-					pageContent,
-					G.controls.IconTable.create()
-						.items([
-						    G.controls.SiteLink.create()
-								.icon("/static/images/logo_google.png")
-								.linkTo("/google"),
-							G.controls.SiteLink.create()
-								.icon("/static/images/logo_citysearch.png")
-								.linkTo("/citysearch"),
-							G.controls.SiteLink.create()
-								.icon("/static/images/logo_yahoo.png")
-								.linkTo("/yahoo"),
-							G.controls.SiteLink.create()
-								.icon("/static/images/logo_bing.png")
-								.linkTo("bing")
-						])
-				)
-			);
-		}
-	}))	
+    G.addControl("Home", Page.sub({
+        inherited: {
+            content:
+                {
+                    html: "div",
+                    ref: "content",
+                    css: {
+                        "text-align": "center"
+                    },
+                    content:
+                        {
+                            html: "div",
+                            ref: "review_section",
+                            css: {
+                                "margin-top": "50px"
+                            }
+                        }
+            }
+        },
+        pageData: function(data) {
+            if (data == undefined) {
+                return data
+            } else {
+            	if (data.user_on_iphone) {
+            		$reviewStep = G.controls.ReviewStepsMobile;
+            	} else if (data.user_on_nexus) {
+            		$reviewStep = G.controls.ReviewStepsNexus;
+            		this.$review_section().css({ 'margin-top': 0});
+            	} else {
+            		$reviewStep = G.controls.ReviewStep
+            	}           	
+                this.$review_section().content(
+                        $reviewStep.create().properties({
+                            displayDevice: data.displayDevice,
+                            involvementOptions: data.involvementOptions,
+                            businessName: data.businessName,
+                            business_code: data.business_code,
+                            withPublicSharingCheckbox: data.withPublicSharingCheckbox                      	
+                        })
+                    );
+                return this
+            }
+        },
+        initialize: function() {
+//            G.doTimer();
+//            this.$content().click(function() {
+//                G.restartTimeout();
+//            });
+        }
+    }))
 })

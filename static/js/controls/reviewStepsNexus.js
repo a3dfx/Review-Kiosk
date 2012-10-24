@@ -3,33 +3,20 @@ $(document).ready(function() {
         inherited: {
             content:
                  {
-                     html: "center",
+                     html: "div",
                      content:
                          [
-                         {
-                                html: "div",
-                                ref: "wrapper",
-                                css: {
-                                    "padding-bottom": "-10px"
-                                },
-                                content:
-                                    {
-                                          html: "div",
-                                        ref: "header",
-                                        css: {
-                                            "vertical-align": "middle",
-                                            "padding-bottom": "30px",
-                                            "color": "white",
-                                            "font-size": "40px"
-                                        },
-                                        content: "What do you think of us?"
-                                    }
-                            },
                             {
                                 html: "div",
                                 ref: "content",
                                 css: {
-                                    "width": "949px"
+                                	'background': 'url("../../static/images/background.jpg") repeat-x fixed left top transparent',
+	                                'border': '1px solid transparent',
+	                                'height': '966px',
+	                                'overflow': 'hidden',                               	
+                                    "width": "600px",
+                                    'padding-top': 40,
+                                    'padding-left': 9,
                                 },
                                 content:
                                       [
@@ -37,15 +24,16 @@ $(document).ready(function() {
                                               html: "div",
                                               ref: "step left",
                                               css: {
-                                            	  'height': 290,
-                                            	  'width': 300
+                                            	  'height': 255,
+                                            	  'width': 570,
+                                            	  'margin-bottom': 47
                                               },
                                               content:
                                                   {
                                                       html: "div",
                                                       ref: "pad",
                                                       css: {
-                                                          "margin-left": "-16px"
+                                                          "margin-left": "119px"
                                                       },
                                                       content:
                                                           [
@@ -54,6 +42,10 @@ $(document).ready(function() {
                                                                  ref: "reviewSectionHeader",
                                                                  label_text: "Rate Us",
                                                                  step: 1,
+                                                                 cssStepLabel: {
+                                                                	'font-size': 32,
+                                                                	'margin-top': -10
+                                                                 },
                                                                  cssStepTitle: {
                                                                 	'margin-bottom': 7 
                                                                  },
@@ -70,13 +62,18 @@ $(document).ready(function() {
                                                                  },
                                                                  css: {
                                                                      "margin-left": "24px",
-                                                                     'font-size': 22,
+                                                                     'font-size': 17,
                                                                      'padding-top': 0
                                                                  },
                                                                  content: "Tap over the stars to set your rating."
                                                              },
                                                              {
-                                                                 control: G.controls.StarRating,
+                                                                 control: G.controls.StarRatingLarge,
+                                                                 css: {
+                                                                	'width': 420,
+                                                                	'margin-left': -67,
+                                                                	'margin-top': -11
+                                                                 },
                                                                  ref: "starRating"
                                                         
                                                              }
@@ -87,38 +84,44 @@ $(document).ready(function() {
                                               html: "div",
                                               ref: "step",
                                               css: {
-                                            	  'height': 290,
-                                            	  'width': 300
+                                            	  'height': 242,
+                                            	  'width': 570,
+                                            	  'margin-bottom': 47
                                               },                                              
                                               content:
                                                   {
                                                       html: "div",
                                                       ref: "pad",
                                                       css: {
-                                                    	'margin-left': -33  
+                                                    	'margin-left': 119  
                                                       },
                                                       content:
                                                           [
                                                               {
                                                                  control: G.controls.ReviewSectionHeader,
                                                                  ref: "reviewSectionHeader",
-                                                                 label_text: "Review Us",
+                                                                 label_text: "Your Comments",
                                                                  step: 2,
+                                                                 cssStepLabel: {
+                                                                 	'font-size': 32,
+                                                                	'margin-top': -10
+                                                                  },                                                                 
                                                                  css: {
+                                                                	 'margin-left': -6,
                                                                      "margin-bottom": "20px"
                                                                  }
                                                              },
                                                              {
                                                                  control: G.controls.TextArea,
                                                                  ref: "feedback",
-                                                                 rows: 8,
+                                                                 rows: 5,
                                                                  placeHolderText: "Type your comments here...",
                                                                  cssTextArea: {
-                                                                	 'margin-left': 45,
-                                                                	 'width': 260
+                                                                	 'margin-left': -91,
+                                                                	 'width': 500
                                                                  },
                                                                  cssErrorMarker: {
-                                                                	 'margin-left': 24
+                                                                	 'margin-left': -111
                                                                  }
                                                              }
                                                           ]
@@ -128,8 +131,8 @@ $(document).ready(function() {
                                               html: "div",
                                               ref: "step right",
                                               css: {
-                                            	  'height': 290,
-                                            	  'width': 300
+                                            	  'height': 168,
+                                            	  'width': 570
                                               },                                              
                                               content:
                                                   {
@@ -137,130 +140,47 @@ $(document).ready(function() {
                                                       ref: "pad",
                                                       css: {
                                                     	'width': 309,
-                                                      	'margin-left': -9 
+                                                      	'margin-left': 119 
                                                       },
                                                       content:
                                                           [
                                                               {
                                                                  control: G.controls.ReviewSectionHeader,
                                                                  ref: "reviewSectionHeader",
-                                                                 label_text: "About You",
+                                                                 label_text: "Your Email",
                                                                  step: 3,
                                                                  cssStep: {
                                                                 	'left': 199 
                                                                  },
                                                                  cssStepLabel: {
-                                                                	 'margin-left': 60
+                                                                	 'font-size': 32,
+                                                                	 'margin-left': 60,
+                                                                 	 'margin-top': -10
                                                                  },
                                                                  cssStepTitle: {
                                                                 	 'margin-bottom': 10
                                                                  },                                                                 
                                                                  css: {
-                                                                	 'margin-left': -67,
+                                                                	 'margin-left': -61,
                                                                      "margin-bottom": "20px"
-                                                                 }
-                                                             },
-                                                             {
-                                                                 html: "h3",
-                                                                 ref: "emailHeader",
-                                                                 content: "What is your email address?",
-                                                                 css: {
-                                                                     "margin-left": "24px",
-                                                                     "margin-bottom": "8px",
-                                                                     'font-size': 20,
                                                                  }
                                                              },
                                                              {
                                                                  control: G.controls.TextField,
                                                                  ref: "email",
                                                                  cssTextField: {
-                                                                	 'width': '263px',
-                                                                	 'height': 23
+                                                                	 'width': 325,
+                                                                	 'height': 23,
+                                                                	 'margin-left': -14
+                                                                 },
+                                                                 cssErrorMarker: {
+                                                                	'margin-left': -35 
                                                                  },
                                                                  withCustomErrorDisplay: true,
                                                                  required: true,
                                                                  validateEmail: true,
                                                                  placeHolderText: "Enter email address"
-                                                             },                                                             
-                                                             {
-                                                                 html: "h3",
-                                                                 ref: "checkboxHeader",
-                                                                 content: "What did you do today?",
-                                                                 css: {
-                                                                	 'font-size': 20,
-                                                                	 'margin-bottom': 0,
-                                                                     "margin-left": "24px",
-                                                                     'margin-top': 15
-                                                                 }
-                                                             },
-                                                             {
-                                                                 control: G.controls.TextField,
-                                                                 ref: "name",
-                                                                 required: false,
-                                                                 withCustomErrorDisplay: true,
-                                                                 placeHolderText: "Enter your first name",
-                                                                 cssTextField: {
-                                                                	 'width': '263px',
-                                                                 },
-                                                                 css: {
-                                                                    'display': 'none',
-                                                                    'padding-bottom': 37
-                                                                 }
-                                                             },
-                                                             {
-                                                                 html: "ul",
-                                                                 ref: "options",
-                                                                 attr: {
-                                                                     'class': "options"
-                                                                 },
-                                                                 css: {
-                                                                     "width": "91%",
-                                                                     'margin-bottom': 10
-                                                                 },
-                                                                 content:
-                                                                     [
-                                                                          {
-                                                                              control: G.controls.CheckBox,
-                                                                              ref: "opt1",
-                                                                              css: {
-                                                                                  "display": "inline",
-                                                                              },
-                                                                              cssContainer: {
-                                                                            	  'width': 152
-                                                                              }
-                                                                          },
-                                                                          {
-                                                                              control: G.controls.CheckBox,
-                                                                              ref: "opt2",
-                                                                              css: {
-                                                                                  "display": "inline"
-                                                                              },
-                                                                              cssContainer: {
-                                                                            	  'width': 129
-                                                                              }
-                                                                          },
-                                                                          {
-                                                                              control: G.controls.CheckBox,
-                                                                              ref: "opt3",
-                                                                              css: {
-                                                                                  "display": "inline"
-                                                                              },
-                                                                              cssContainer: {
-                                                                            	  'width': 152
-                                                                              }
-                                                                          },
-                                                                          {
-                                                                              control: G.controls.CheckBox,
-                                                                              ref: "opt4",
-                                                                              css: {
-                                                                                  "display": "inline"
-                                                                              },
-                                                                              cssContainer: {
-                                                                            	  'width': 129
-                                                                              }
-                                                                          }
-                                                                     ]
-                                                             }
+                                                             }                                                             
                                                           ]
                                                   }
                                           },
@@ -272,8 +192,9 @@ $(document).ready(function() {
                                               },
                                               css: {
                                                   "display": "hidden",
-                                                  'width': 949,
-                                                  'margin-top': 5,
+                                                  'width': 570,
+                                                  'margin-left': 8,
+                                                  'background': 'none repeat scroll 0 0 rgba(0, 0, 0, 0.5)'
                                               },
                                               content:
                                                   [
@@ -286,6 +207,9 @@ $(document).ready(function() {
                                                       },
                                                        {
                                                            html: "span",
+                                                           css: {
+                                                        	 'font-size': 17  
+                                                           },
                                                            content: "Please complete the required steps before continuing."
                                                        }
                                                   ]
@@ -301,7 +225,7 @@ $(document).ready(function() {
                                                  "font-size": "18px",
                                                  "font-family": "arial",
                                                  "float": "left",
-                                                 "margin-left": "354px",
+                                                 "margin-left": "168px",
                                                  "height": "47px"
                                              }
                                           }
@@ -328,46 +252,10 @@ $(document).ready(function() {
             var self = this;
             this.inDocument(function() {
             	$('body').css({
-            		'background': 'none',
-            		'background-color': '#012A6A'
+            		'background': 'none'
             	})
-            	this.$starRating().cssErrorDisplayWidth('276px');
+            	this.$starRating().cssErrorDisplayWidth('420px');
 
-                var toggleHeadWrapper = function(action) {
-
-                    if (action == "hide" && self.$wrapper().css("display") != "none") {
-                        self.$wrapper().animate({
-                              height: "toggle",
-                              opacity: 1
-                            }, 500);
-                    } else if (action == "show" && self.$wrapper().css("display") == "none") {
-                        self.$wrapper().animate({
-                            height: "toggle",
-                            opacity: 1
-                          }, 500);
-                    }
-                }
-                if (this.involvementOptions()) {
-                    self.$opt1().content(this.involvementOptions()[0] || null);
-                    self.$opt2().content(this.involvementOptions()[1] || null);
-                    self.$opt3().content(this.involvementOptions()[2] || null);
-                    self.$opt4().content(this.involvementOptions()[3] || null);
-                } else {
-                    self.$checkboxHeader().content("What is your first name?").css({
-                    	'padding-bottom': 5
-                    });
-                    self.$options().hide();
-                    self.$name().show();
-                }
-
-                if (self.displayDevice() == 'tablet') {
-                    self.$feedback().click(function() {
-                        toggleHeadWrapper('hide');
-                    })
-                    self.$email().click(function() {
-                        toggleHeadWrapper('hide');
-                    })                    
-                }
                 var bizName = self.businessName();
                 var submitReview = function() {
                     var allInpsValid = self.inputsValid([
@@ -378,14 +266,6 @@ $(document).ready(function() {
                     if (allInpsValid) {
                         self.$submitButton().disable();
                         self.$errorMessage().hide();
-                        biz_involvement = $.map([self.$opt1().getValidInput(),
-                                               self.$opt2().getValidInput(),
-                                               self.$opt3().getValidInput(),
-                                               self.$opt4().getValidInput()], function(n) {
-                            if (n) {
-                                return " " + n;
-                            }
-                        }).join();
 
                         var publicPermission = false;
                         if (self.withPublicSharingCheckbox()) {
@@ -394,10 +274,8 @@ $(document).ready(function() {
 
                         $.get("/ajax?email=" + encodeURIComponent(self.$email().getValidInput()) +
                         	"&business_code=" + encodeURIComponent(self.business_code()) + 
-                            "&business_involvement=" + encodeURIComponent(biz_involvement) +
                             "&starRating=" + encodeURIComponent(self.$starRating().getValidInput()) +
                             "&agree_public_share=" + publicPermission +
-                            "&firstname=" + encodeURIComponent(self.$name().getValidInput()) +
                             "&feedback=" + encodeURIComponent(self.$feedback().getValidInput()), function(data) {
 
                             if (data.message == "successful") {
@@ -441,14 +319,7 @@ $(document).ready(function() {
                         submitReview()
                     }
                 });
-                self.$starRating().click(function() {
-                    toggleHeadWrapper('show');
-                });
-                self.$options().click(function() {
-                    toggleHeadWrapper('show');
-                });
                 self.$submitButton().click(function() {
-                    toggleHeadWrapper('show');
                     submitReview();
                 });
             })
