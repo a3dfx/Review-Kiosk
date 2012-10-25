@@ -121,7 +121,7 @@ class MainPage(webapp.RequestHandler):
             uastring = self.request.headers.get('user_agent')
             user_on_iphone = "Mobile" in uastring
             user_on_nexus = "Nexus 7" in uastring
-            user_on_nexus = True
+
             pageData = simplejson.dumps({'involvementOptions': biz.involvement_options.split('|') if biz.involvement_options else False,
                                          'businessName': biz.name,
                                          'withPublicSharingCheckbox': biz.with_public_sharing_checkbox,
