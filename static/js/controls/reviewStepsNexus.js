@@ -74,6 +74,7 @@ $(document).ready(function() {
                                                                 	'margin-left': -66,
                                                                 	'margin-top': -11
                                                                  },
+                                                                 noErrorImage: true,
                                                                  ref: "starRating"
                                                         
                                                              }
@@ -115,6 +116,7 @@ $(document).ready(function() {
                                                                  control: G.controls.TextArea,
                                                                  ref: "feedback",
                                                                  rows: 5,
+                                                                 noErrorImage: true,
                                                                  placeHolderText: "Type your comments here...",
                                                                  cssTextArea: {
                                                                 	 'margin-left': -91,
@@ -176,6 +178,7 @@ $(document).ready(function() {
                                                                  cssErrorMarker: {
                                                                 	'margin-left': -35 
                                                                  },
+                                                                 noErrorImage: true,
                                                                  withCustomErrorDisplay: true,
                                                                  required: true,
                                                                  placeHolderText: "Enter email address"
@@ -270,18 +273,12 @@ $(document).ready(function() {
             	$('div.step.left').animate({
                       height: "toggle",
                       opacity: 1
-                    }, 500, function() {
-                        self.$email().getValidInput();
-                        self.$feedback().getValidInput();                     	
-                    });
+                    }, 500);
             } else if (action == "show" && $('div.step.left').css("display") == "none") {
             	$('div.step.left').animate({
                     height: "toggle",
                     opacity: 1
-                  }, 500, function() {
-                      self.$email().getValidInput();
-                      self.$feedback().getValidInput();                     	
-                  });
+                  }, 500);
             }            
         },
         initialize: function() {

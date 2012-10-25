@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	G.addControl("TextField", Control.sub({
+	G.addControl("TextFieldEmail", Control.sub({
 	    inherited: {
 	        content: 
 	        	[	  
@@ -15,6 +15,9 @@ $(document).ready(function() {
 	        	 	},	        	 
 		        	{
 		            	html: "input",
+		            	attr: {
+		            		type: 'email'
+		            	},
 		            	ref: "textField"	        		
 		        	},
 	  	            {
@@ -31,16 +34,21 @@ $(document).ready(function() {
 	  	            }		        	
 	        	]                  
 	    },
+	    noErrorImage: Control.property(),
 	    cssTextField: Control.chain('$textField', 'css'),
 	    label: Control.property(),
 	    id: Control.property(),
 	    cssErrorMarker: Control.chain('$errorMarker', 'css'),
 	    errorMessage: Control.property(),
-	    validateEmail: Control.property(),
 	    required: Control.property(),
 	    withCustomErrorDisplay: Control.property(),  
 	    charLimit: Control.property(),	   
-	    
+	    resetErrorContainer: function() {
+        	this.$textField().css({
+        		"border": ""
+        	});	
+        	this.$errorContainer().hide();
+	    },
 	    placeHolderText: Control.property(function(text) {
 	    	if (text == undefined) {
 	    		return text
@@ -59,18 +67,9 @@ $(document).ready(function() {
 	    },
 	    validateRequiredField: function() {
 	    	var inputValid = false;
-	    	this.errorMessage('Invalid input');
-	        if (this.validateEmail()) {
-	        	this.errorMessage('Invalid email address');
-	        	var emailPattern = new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i);
-	        	inputValid = emailPattern.test(this.$textField().content());
-	        } else {
-	        	var pattern = new RegExp(/<(.|\n)*?>/g);
-	        	if (!pattern.test(this.$textField().content()) &&
-	        		this.$textField().content() != this.placeHolderText()) {
-	        		inputValid = this.$textField().content().length >= 0
-	        	}       	
-	        }
+        	this.errorMessage('Invalid email address');        	
+        	var emailPattern = new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i);
+        	inputValid = emailPattern.test(this.$textField().content());
     		if (this.charLimit()) {
     			if (this.$textField().content().length <= this.charLimit()) {
     				inputValid = true;
@@ -122,6 +121,9 @@ $(document).ready(function() {
 	    },
 	    initialize: function() {
 	    	var self = this;
+	    	if (self.noErrorImage()) {
+	    		self.$errorMarker().remove();
+	    	}	    	
 	    	this.$textField().focus(function() {
 	    		if (self.$textField().content() == self.placeHolderText()) {
 	    			self.$textField().content(null);
@@ -129,13 +131,9 @@ $(document).ready(function() {
 	    	}).blur(function() {
 	    		if (!self.$textField().content()) {
 	    			self.$textField().content(self.placeHolderText());
-	    		}	
+	    		}	    		
 	    		self.getValidInput();
-	    	}).keydown(function(event) {
-	    		if (event.which != 13) {
-	    			self.getValidInput();
-	    		}
-	    	});
+	    	})
 	    }	    
 	}));
 });

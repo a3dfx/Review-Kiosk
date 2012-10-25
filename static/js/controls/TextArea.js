@@ -34,10 +34,14 @@ $(document).ready(function() {
 	  	            }	        	 
 	        	]	                  
 	    },
+	    noErrorImage: Control.property(),
 	    cssErrorMarker: Control.chain('$errorMarker', 'css'),
 	    cssTextArea: Control.chain('$textArea', 'css'),
 	    initialize: function() {
 	    	var self = this;
+	    	if (self.noErrorImage()) {
+	    		self.$errorMarker().remove();
+	    	}
 	    	this.$textArea().focus(function() {
 	    		if (self.$textArea().content() == self.placeHolderText()) {
 	    			self.$textArea().content(null);
@@ -45,11 +49,18 @@ $(document).ready(function() {
 	    	}).blur(function() {
 	    		if (!self.$textArea().content()) {
 	    			self.$textArea().content(self.placeHolderText());
-	    		}	    		
+	    		}	   
+	    		self.getValidInput();
 	    	}).keydown(function() {
 	    		self.getValidInput();
 	    	});
 	    },
+	    resetErrorContainer: function() {
+        	this.$textArea().css({
+        		"border": ""
+        	});	
+        	this.$errorContainer().hide();
+	    },	    
 	    placeHolderText: Control.property(function(text) {
 	    	if (text == undefined) {
 	    		return text
