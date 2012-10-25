@@ -245,7 +245,37 @@ $(document).ready(function() {
                                           	content: 
                                           		{
                                           		 html: 'div',
-                                          		 content: "Thank you for providing your  review to [Client] and Reputation.com&reg;.  You own your Review. However, by submitting your comments/information through this review kiosk, you grant [client] and Reputation.com  a license to use your comments/information to improve/promote [Clients'] business to, including, but not limited to (1) contact you to respond to criticism, and (2) to publish, reformat or distribute your review." 
+                                          		 content: 
+                                          			 [
+                                          			  	{
+                                          			  		html: 'span',
+                                          			  		content: "Thank you for providing your  review to "
+                                          			  	},
+                                          			  	{
+                                          			  		html: 'span',
+                                          			  		ref: 'clientName'
+                                          			  	},
+                                          			  	{
+                                          			  		html: 'span',
+                                          			  		content: " and Reputation.com.  You own your Review. However, by submitting your comments/information through this review kiosk, you grant "
+                                          			  	},
+                                          			  	{
+                                          			  		html: 'span',
+                                          			  		ref: 'clientName'
+                                          			  	},
+                                          			  	{
+                                          			  		html: 'span',
+                                          			  		content: " and Reputation.com  a license to use your comments/information to improve/promote "
+                                          			  	},
+                                          			  	{
+                                          			  		html: 'span',
+                                          			  		ref: 'clientName'
+                                          			  	},
+                                          			  	{
+                                          			  		html: 'span',
+                                          			  		content: "'s business to, including, but not limited to (1) contact you to respond to criticism, and (2) to publish, reformat or distribute your review."
+                                          			  	}                                           			  	
+                                          			 ] 
                                           		}
                                           }
                                     ]
@@ -290,6 +320,9 @@ $(document).ready(function() {
             	this.$starRating().cssErrorDisplayWidth('420px');
 
                 var bizName = self.businessName();
+                $.each($('.clientName'), function() {
+                	$(this).html(bizName);
+                });
                 var submitReview = function() {
                     var allInpsValid = self.inputsValid([
                         self.$starRating().getValidInput(),
