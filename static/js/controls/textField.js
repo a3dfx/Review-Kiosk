@@ -130,8 +130,8 @@ $(document).ready(function() {
 	    		if (!self.$textField().content()) {
 	    			self.$textField().content(self.placeHolderText());
 	    		}	    		
-	    	}).keydown(function() {
-	    		if (even.which != 13) {
+	    	}).keydown(function(event) {
+	    		if (event.which != 13) {
 	    			self.getValidInput();
 	    		}
 	    	});
