@@ -46,6 +46,8 @@ $(document).ready(function() {
 	    		if (!self.$textArea().content()) {
 	    			self.$textArea().content(self.placeHolderText());
 	    		}	    		
+	    	}).keydown(function() {
+	    		self.getValidInput();
 	    	});
 	    },
 	    placeHolderText: Control.property(function(text) {
@@ -75,7 +77,7 @@ $(document).ready(function() {
 	    getValidInput: function() {
 	        var pattern = new RegExp(/<(.|\n)*?>/g);
 	        if (!pattern.test(this.$textArea().content()) && 
-	        	this.$textArea().content().length > 0 &&
+	        	this.$textArea().content().length >= 0 &&
 	        	this.$textArea().content() != this.placeHolderText()) {	
 	        	this.$textArea().css({
 	        		"border": "2px solid #AAAAAA"

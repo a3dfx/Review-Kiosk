@@ -91,8 +91,12 @@ $(document).ready(function() {
 	        	]                 
 	    },
 	    initialize: function() {
+	    	var self = this;
 	    	this.inDocument(function() {
 	    		$('div.rateit').rateit();
+	    	})
+	    	self.click(function() {
+	    		self.getValidInput();
 	    	})
 	    },
 	    cssErrorDisplayWidth: Control.chain('$errorBorder', 'css/width'),

@@ -68,7 +68,7 @@ $(document).ready(function() {
 	        	var pattern = new RegExp(/<(.|\n)*?>/g);
 	        	if (!pattern.test(this.$textField().content()) &&
 	        		this.$textField().content() != this.placeHolderText()) {
-	        		inputValid = this.$textField().content().length > 0
+	        		inputValid = this.$textField().content().length >= 0
 	        	}       	
 	        }
     		if (this.charLimit()) {
@@ -130,6 +130,10 @@ $(document).ready(function() {
 	    		if (!self.$textField().content()) {
 	    			self.$textField().content(self.placeHolderText());
 	    		}	    		
+	    	}).keydown(function() {
+	    		if (even.which != 13) {
+	    			self.getValidInput();
+	    		}
 	    	});
 	    }	    
 	}));

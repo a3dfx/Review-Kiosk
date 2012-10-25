@@ -10,13 +10,13 @@ $(document).ready(function() {
                                 html: "div",
                                 ref: "content",
                                 css: {
-                                	'background': 'url("../../static/images/background.jpg") repeat-x fixed left top transparent',
-	                                'border': '1px solid transparent',
-	                                'height': '966px',
+	                                'background-color': '#012A6A',
+                                	'border': '1px solid transparent',
+	                                'height': '1000px',
 	                                'overflow': 'hidden',                               	
-                                    "width": "600px",
+                                    "width": "595px",
                                     'padding-top': 40,
-                                    'padding-left': 9,
+                                    'padding-left': 5
                                 },
                                 content:
                                       [
@@ -33,7 +33,7 @@ $(document).ready(function() {
                                                       html: "div",
                                                       ref: "pad",
                                                       css: {
-                                                          "margin-left": "119px"
+                                                          "margin-left": "112px"
                                                       },
                                                       content:
                                                           [
@@ -71,7 +71,7 @@ $(document).ready(function() {
                                                                  control: G.controls.StarRatingLarge,
                                                                  css: {
                                                                 	'width': 420,
-                                                                	'margin-left': -67,
+                                                                	'margin-left': -66,
                                                                 	'margin-top': -11
                                                                  },
                                                                  ref: "starRating"
@@ -93,7 +93,7 @@ $(document).ready(function() {
                                                       html: "div",
                                                       ref: "pad",
                                                       css: {
-                                                    	'margin-left': 119  
+                                                    	'margin-left': 112  
                                                       },
                                                       content:
                                                           [
@@ -118,7 +118,7 @@ $(document).ready(function() {
                                                                  placeHolderText: "Type your comments here...",
                                                                  cssTextArea: {
                                                                 	 'margin-left': -91,
-                                                                	 'width': 500
+                                                                	 'width': 511
                                                                  },
                                                                  cssErrorMarker: {
                                                                 	 'margin-left': -111
@@ -140,7 +140,7 @@ $(document).ready(function() {
                                                       ref: "pad",
                                                       css: {
                                                     	'width': 309,
-                                                      	'margin-left': 119 
+                                                      	'margin-left': 112 
                                                       },
                                                       content:
                                                           [
@@ -166,7 +166,7 @@ $(document).ready(function() {
                                                                  }
                                                              },
                                                              {
-                                                                 control: G.controls.TextField,
+                                                                 control: G.controls.TextFieldEmail,
                                                                  ref: "email",
                                                                  cssTextField: {
                                                                 	 'width': 325,
@@ -178,7 +178,6 @@ $(document).ready(function() {
                                                                  },
                                                                  withCustomErrorDisplay: true,
                                                                  required: true,
-                                                                 validateEmail: true,
                                                                  placeHolderText: "Enter email address"
                                                              }                                                             
                                                           ]
@@ -217,7 +216,7 @@ $(document).ready(function() {
                                           {
                                              control: G.controls.SubmitButton,
                                              ref: "submitButton",
-                                             content: "Send Review",
+                                             content: "Submit Review",
                                              css: {
                                                  "margin-top": "20px",
                                                  "background-image": "linear-gradient(top, #ffd182, #c2920f)",
@@ -225,9 +224,26 @@ $(document).ready(function() {
                                                  "font-size": "18px",
                                                  "font-family": "arial",
                                                  "float": "left",
-                                                 "margin-left": "168px",
+                                                 "margin-left": "155px",
                                                  "height": "47px"
                                              }
+                                          },
+                                          {
+                                          	html: 'div',
+                                          	ref: 'legalText',
+                                          	css: {
+                                          		'height': 200,
+                                          		'margin-top': 915,
+                                          		'margin-left': 37,
+                                          		'width': 506,
+                                          		'text-align': 'left',
+                                          		'color': 'white'
+                                          	},
+                                          	content: 
+                                          		{
+                                          		 html: 'div',
+                                          		 content: "Thank you for providing your  review to [Client] and Reputation.com&reg;.  You own your Review. However, by submitting your comments/information through this review kiosk, you grant [client] and Reputation.com  a license to use your comments/information to improve/promote [Clients'] business to, including, but not limited to (1) contact you to respond to criticism, and (2) to publish, reformat or distribute your review." 
+                                          		}
                                           }
                                     ]
                             }
@@ -248,6 +264,26 @@ $(document).ready(function() {
             }
             return allInpsValid;
         },
+        toggleDiv: function(action) {
+        	var self = this;
+            if (action == "hide" && $('div.step.left').css("display") != "none") {
+            	$('div.step.left').animate({
+                      height: "toggle",
+                      opacity: 1
+                    }, 500, function() {
+                        self.$email().getValidInput();
+                        self.$feedback().getValidInput();                     	
+                    });
+            } else if (action == "show" && $('div.step.left').css("display") == "none") {
+            	$('div.step.left').animate({
+                    height: "toggle",
+                    opacity: 1
+                  }, 500, function() {
+                      self.$email().getValidInput();
+                      self.$feedback().getValidInput();                     	
+                  });
+            }            
+        },
         initialize: function() {
             var self = this;
             this.inDocument(function() {
@@ -267,38 +303,33 @@ $(document).ready(function() {
                         self.$submitButton().disable();
                         self.$errorMessage().hide();
 
-                        var publicPermission = false;
-                        if (self.withPublicSharingCheckbox()) {
-                            publicPermission = encodeURIComponent(self.$publicPermission().isChecked());
-                        }
-
                         $.get("/ajax?email=" + encodeURIComponent(self.$email().getValidInput()) +
                         	"&business_code=" + encodeURIComponent(self.business_code()) + 
                             "&starRating=" + encodeURIComponent(self.$starRating().getValidInput()) +
-                            "&agree_public_share=" + publicPermission +
                             "&feedback=" + encodeURIComponent(self.$feedback().getValidInput()), function(data) {
 
                             if (data.message == "successful") {
-                                $("div.content").empty().append(
+                                $("div.content").empty().css({
+                                	'background-color': '#012A6A',
+                                	'border': '1px solid transparent',
+                                    'height': '966px',
+                                    'overflow': 'hidden',                               	
+                                    "width": "595px",
+                                    'padding-top': 40,
+                                    'padding-left': 5                                	
+                                }).append(
+                                    $("<div>").css({
+                                        "height": "100%",
+                                        "margin-top": "100px"
+                                    }).append(
                                         $("<div>").css({
-                                            "height": "100%",
-                                            "margin-top": "100px"
+                                            "font-size": "50px",
+                                            "color": "white"
                                         }).append(
-                                            $("<div>").css({
-                                                "font-size": "70px",
-                                                "color": "white"
-                                            }).append(
-                                                'Thank you for visiting <br/>' + bizName
-                                            ),
-                                            $("<div>").css({
-                                                'font-size': '30px',
-                                                'color': "lightBlue",
-                                                'margin-top': '42px'
-                                            }).append(
-                                                'If there is anything we can do to make your experience more enjoyable,</br>please do not hesitate to speak to the office staff.'
-                                            )
+                                            'Thank you for visiting <br/>' + bizName
                                         )
-                                    );
+                                    )
+                                );
                                 setTimeout("location.reload(true);",7000);
                             } else {
                                 alert("Sorry there was an error");
@@ -314,10 +345,14 @@ $(document).ready(function() {
                         }
                     }
                 }
-                self.$email().bind("keydown", function(e) {
+                self.$email().bind("keydown", function(e) {                	
                     if (e.keyCode == 13) {
                         submitReview()
                     }
+                }).click(function() {
+                	self.toggleDiv('hide')
+                }).focusout(function() {
+                	self.toggleDiv('show')
                 });
                 self.$submitButton().click(function() {
                     submitReview();

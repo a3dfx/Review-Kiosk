@@ -103,6 +103,7 @@ class MainPage(webapp.RequestHandler):
             "/static/js/controls/checkbox.js",
             "/static/js/controls/submitButton.js",
             "/static/js/controls/textField.js",
+            "/static/js/controls/emailTextField.js",
             "/static/js/controls/TextArea.js",
             "/static/js/controls/reviewSectionHeader.js",
             "/static/js/controls/reviewStep.js",
@@ -119,7 +120,8 @@ class MainPage(webapp.RequestHandler):
         if biz:
             uastring = self.request.headers.get('user_agent')
             user_on_iphone = "Mobile" in uastring
-            user_on_nexus = "Nexus 7 Build" in uastring
+            user_on_nexus = "Nexus 7" in uastring
+            user_on_nexus = True
             pageData = simplejson.dumps({'involvementOptions': biz.involvement_options.split('|') if biz.involvement_options else False,
                                          'businessName': biz.name,
                                          'withPublicSharingCheckbox': biz.with_public_sharing_checkbox,
